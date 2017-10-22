@@ -1,6 +1,5 @@
 """ This module contains the debouncer """
 
-from collections import deque
 from time import sleep
 from threading import Thread
 from discord import Webhook, RequestsWebhookAdapter
