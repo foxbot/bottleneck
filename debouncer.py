@@ -1,15 +1,16 @@
 """ This module contains the debouncer """
 
+import sys
 from time import sleep
 from threading import Thread
 from discord import Webhook, RequestsWebhookAdapter
-import sys
 
 class Debouncer(Thread):
     """ A debouncer for webhooks """
 
     def __init__(self, config):
         Thread.__init__(self)
+        self.daemon = True
 
         self.queue = []
         self.config = config
@@ -38,6 +39,8 @@ class Debouncer(Thread):
     def run(self):
         try:
             self._run()
+            print("Thread ran to completion?", file=sys.stderr)
+            sys.exit(1)
         except:
             print("Unexpected Error:", sys.exc_info()[0], file=sys.stderr)
             # Kill the process so supervisord can restart
