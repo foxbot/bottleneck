@@ -15,14 +15,15 @@ together.
 The following values must be set in the configuration file prior to
 running:
 
-| key          | description                               |
-| ------------ | ----------------------------------------- |
-| `delay`      | Interval to process webhook queue         |
-| `batch_size` | Number of Embeds to include per batch     |
-| `url`        | Webhook URL                               |
-| `token`      | Authorization header to validate requests |
-| `host`       | Host to run Flask server on               |
-| `port`       | Port to run Flask server on               |
+| key          | description                                |
+| ------------ | ------------------------------------------ |
+| `delay`      | Interval to process webhook queue          |
+| `batch_size` | Number of Embeds to include per batch      |
+| `url`        | Webhook URL                                |
+| `token`      | Authorization header to validate requests  |
+| `host`       | Host to run Flask server on                |
+| `port`       | Port to run Flask server on                |
+| `sentry`     | URL to Sentry instance ('None' to disable) |
 
 ### Usage
 

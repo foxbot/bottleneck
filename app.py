@@ -11,7 +11,8 @@ app = Flask(__name__)
 config = toml.load("config.toml")
 debouncer = Debouncer(config)
 
-sentry = Sentry(app=app, dsn=config['sentry'])
+if config['sentry']:
+    sentry = Sentry(app=app, dsn=config['sentry'])
 
 @app.route("/push", methods=['POST'])
 def push():

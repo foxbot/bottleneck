@@ -19,8 +19,9 @@ class Debouncer(Thread):
         self.delay = config['delay']
         self.batch_size = config['batch_size']
 
-        self.webhook = Webhook.from_url(self.config['url'], adapter=RequestsWebhookAdapter())
-        self.raven = Client(config['sentry'])
+        self.webhook = Webhook.from_url(config['url'], adapter=RequestsWebhookAdapter())
+        if config['sentry']:
+            self.raven = Client(config['sentry'])
 
     def push(self, data):
         """ Append a webhook to discord """
@@ -44,7 +45,8 @@ class Debouncer(Thread):
             print("Thread ran to completion?", file=sys.stderr)
             sys.exit(1)
         except:
-            self.raven.captureException()
+            if self.raven:
+                self.raven.captureException()
             # Kill the process so supervisord can restart
             sys.exit(1)
 
