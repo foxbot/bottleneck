@@ -5,10 +5,13 @@ from debouncer import Debouncer
 from flask import Flask
 from flask import abort, request
 from discord import Embed
+from raven.contrib.flask import Sentry
 
 app = Flask(__name__)
 config = toml.load("config.toml")
 debouncer = Debouncer(config)
+
+sentry = Sentry(app=app, dsn=config['sentry'])
 
 @app.route("/push", methods=['POST'])
 def push():

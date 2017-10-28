@@ -4,6 +4,7 @@ import sys
 from time import sleep
 from threading import Thread
 from discord import Webhook, RequestsWebhookAdapter
+from raven import Client
 
 class Debouncer(Thread):
     """ A debouncer for webhooks """
@@ -15,10 +16,11 @@ class Debouncer(Thread):
         self.queue = []
         self.config = config
 
-        self.delay = config['delay'] or 5
-        self.batch_size = config['batch_size'] or 10
+        self.delay = config['delay']
+        self.batch_size = config['batch_size']
 
         self.webhook = Webhook.from_url(self.config['url'], adapter=RequestsWebhookAdapter())
+        self.raven = Client(config['sentry'])
 
     def push(self, data):
         """ Append a webhook to discord """
@@ -42,7 +44,7 @@ class Debouncer(Thread):
             print("Thread ran to completion?", file=sys.stderr)
             sys.exit(1)
         except:
-            print("Unexpected Error:", sys.exc_info()[0], file=sys.stderr)
+            self.raven.captureException()
             # Kill the process so supervisord can restart
             sys.exit(1)
 
