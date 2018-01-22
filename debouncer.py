@@ -37,7 +37,7 @@ class Debouncer(Thread):
             item = self.queue.pop(0)
             items.append(item)
 
-        self.webhook.send(embeds=items)
+        self.webhook.send(content='', embeds=items)
 
     def run(self):
         try:
