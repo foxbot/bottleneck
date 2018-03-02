@@ -1,5 +1,7 @@
 """ This module contains the debouncer """
 
+import os
+import signal
 import sys
 from time import sleep
 from threading import Thread
@@ -45,10 +47,11 @@ class Debouncer(Thread):
             print("Thread ran to completion?", file=sys.stderr)
             sys.exit(1)
         except:
-            if self.raven:
+            if hasattr(self, 'raven'):
                 self.raven.captureException()
             # Kill the process so supervisord can restart
-            sys.exit(1)
+            print("Unexpected error:", sys.exc_info()[0])
+            os.kill(os.getpid(), signal.SIGTERM)
 
     def _run(self):
         while True:
